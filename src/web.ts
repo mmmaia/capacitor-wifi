@@ -6,6 +6,8 @@ import type {
   ConnectOptions,
   DisconnectOptions,
   GetAvailableNetworksResult,
+  GetBssidResult,
+  GetIpAddressesResult,
   GetIpAddressResult,
   GetRssiResult,
   GetSsidResult,
@@ -35,11 +37,19 @@ export class CapacitorWifiWeb extends WebPlugin implements CapacitorWifiPlugin {
     throw this.unimplemented('Not implemented on web.');
   }
 
+  async getIpAddresses(): Promise<GetIpAddressesResult> {
+    throw this.unimplemented('Not implemented on web.');
+  }
+
   async getRssi(): Promise<GetRssiResult> {
     throw this.unimplemented('Not implemented on web.');
   }
 
   async getSsid(): Promise<GetSsidResult> {
+    throw this.unimplemented('Not implemented on web.');
+  }
+
+  async getBssid(): Promise<GetBssidResult> {
     throw this.unimplemented('Not implemented on web.');
   }
 

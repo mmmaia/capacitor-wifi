@@ -45,8 +45,10 @@ npx cap sync
 * [`disconnect(...)`](#disconnect)
 * [`getAvailableNetworks()`](#getavailablenetworks)
 * [`getIpAddress()`](#getipaddress)
+* [`getIpAddresses()`](#getipaddresses)
 * [`getRssi()`](#getrssi)
 * [`getSsid()`](#getssid)
+* [`getBssid()`](#getbssid)
 * [`isEnabled()`](#isenabled)
 * [`startScan()`](#startscan)
 * [`checkPermissions()`](#checkpermissions)
@@ -154,6 +156,23 @@ Available on both Android and iOS.
 --------------------
 
 
+### getIpAddresses()
+
+```typescript
+getIpAddresses() => Promise<GetIpAddressesResult>
+```
+
+Get comprehensive IP address information including public and private IPv4/IPv6 addresses.
+Includes VPN detection and multiple fallback strategies for maximum compatibility.
+Available on Android.
+
+**Returns:** <code>Promise&lt;<a href="#getipaddressesresult">GetIpAddressesResult</a>&gt;</code>
+
+**Since:** 7.0.0
+
+--------------------
+
+
 ### getRssi()
 
 ```typescript
@@ -180,6 +199,22 @@ Get the service set identifier (SSID) of the current network.
 Available on both Android and iOS.
 
 **Returns:** <code>Promise&lt;<a href="#getssidresult">GetSsidResult</a>&gt;</code>
+
+**Since:** 7.0.0
+
+--------------------
+
+
+### getBssid()
+
+```typescript
+getBssid() => Promise<GetBssidResult>
+```
+
+Get the basic service set identifier (BSSID/MAC address) of the current access point.
+Available on Android.
+
+**Returns:** <code>Promise&lt;<a href="#getbssidresult">GetBssidResult</a>&gt;</code>
 
 **Since:** 7.0.0
 
@@ -368,6 +403,19 @@ Result from getIpAddress()
 | **`ipAddress`** | <code>string</code> | The device's IP address | 7.0.0 |
 
 
+#### GetIpAddressesResult
+
+Result from getIpAddresses()
+
+| Prop             | Type                 | Description                                   | Since |
+| ---------------- | -------------------- | --------------------------------------------- | ----- |
+| **`ipv4`**       | <code>string</code>  | Private IPv4 address (e.g., 192.168.1.100)    | 7.0.0 |
+| **`publicIpv4`** | <code>string</code>  | Public IPv4 address                           | 7.0.0 |
+| **`ipv6`**       | <code>string</code>  | Private IPv6 address                          | 7.0.0 |
+| **`publicIpv6`** | <code>string</code>  | Public IPv6 address                           | 7.0.0 |
+| **`isVpn`**      | <code>boolean</code> | Whether the device is connected through a VPN | 7.0.0 |
+
+
 #### GetRssiResult
 
 Result from getRssi()
@@ -381,9 +429,20 @@ Result from getRssi()
 
 Result from getSsid()
 
-| Prop       | Type                | Description                     | Since |
-| ---------- | ------------------- | ------------------------------- | ----- |
-| **`ssid`** | <code>string</code> | The SSID of the current network | 7.0.0 |
+| Prop        | Type                        | Description                                                        | Since |
+| ----------- | --------------------------- | ------------------------------------------------------------------ | ----- |
+| **`ssid`**  | <code>string \| null</code> | The SSID of the current network (null if not connected or unknown) | 7.0.0 |
+| **`isVpn`** | <code>boolean</code>        | Whether the device is connected through a VPN                      | 7.0.0 |
+
+
+#### GetBssidResult
+
+Result from getBssid()
+
+| Prop        | Type                        | Description                                                                 | Since |
+| ----------- | --------------------------- | --------------------------------------------------------------------------- | ----- |
+| **`bssid`** | <code>string \| null</code> | The BSSID (MAC address) of the current access point (null if not connected) | 7.0.0 |
+| **`isVpn`** | <code>boolean</code>        | Whether the device is connected through a VPN                               | 7.0.0 |
 
 
 #### IsEnabledResult

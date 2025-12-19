@@ -95,6 +95,24 @@ export interface CapacitorWifiPlugin {
   getIpAddress(): Promise<GetIpAddressResult>;
 
   /**
+   * Get comprehensive IP address information including public and private IPv4/IPv6 addresses.
+   * Includes VPN detection and multiple fallback strategies for maximum compatibility.
+   * Available on Android.
+   *
+   * @returns Promise that resolves with IP addresses and VPN status
+   * @throws Error if getting IP addresses fails
+   * @since 7.0.0
+   * @example
+   * ```typescript
+   * const result = await CapacitorWifi.getIpAddresses();
+   * console.log('Private IPv4:', result.ipv4);
+   * console.log('Public IPv4:', result.publicIpv4);
+   * console.log('Is VPN:', result.isVpn);
+   * ```
+   */
+  getIpAddresses(): Promise<GetIpAddressesResult>;
+
+  /**
    * Get the received signal strength indicator (RSSI) of the current network in dBm.
    * Only available on Android.
    *
@@ -113,16 +131,33 @@ export interface CapacitorWifiPlugin {
    * Get the service set identifier (SSID) of the current network.
    * Available on both Android and iOS.
    *
-   * @returns Promise that resolves with the SSID
+   * @returns Promise that resolves with the SSID and VPN status
    * @throws Error if getting SSID fails
    * @since 7.0.0
    * @example
    * ```typescript
-   * const { ssid } = await CapacitorWifi.getSsid();
+   * const { ssid, isVpn } = await CapacitorWifi.getSsid();
    * console.log('Connected to:', ssid);
+   * console.log('Is VPN:', isVpn);
    * ```
    */
   getSsid(): Promise<GetSsidResult>;
+
+  /**
+   * Get the basic service set identifier (BSSID/MAC address) of the current access point.
+   * Available on Android.
+   *
+   * @returns Promise that resolves with the BSSID and VPN status
+   * @throws Error if getting BSSID fails
+   * @since 7.0.0
+   * @example
+   * ```typescript
+   * const { bssid, isVpn } = await CapacitorWifi.getBssid();
+   * console.log('Connected to AP:', bssid);
+   * console.log('Is VPN:', isVpn);
+   * ```
+   */
+  getBssid(): Promise<GetBssidResult>;
 
   /**
    * Check if Wi-Fi is enabled on the device.
@@ -374,6 +409,48 @@ export interface GetIpAddressResult {
 }
 
 /**
+ * Result from getIpAddresses()
+ *
+ * @since 7.0.0
+ */
+export interface GetIpAddressesResult {
+  /**
+   * Private IPv4 address (e.g., 192.168.1.100)
+   *
+   * @since 7.0.0
+   */
+  ipv4?: string;
+
+  /**
+   * Public IPv4 address
+   *
+   * @since 7.0.0
+   */
+  publicIpv4?: string;
+
+  /**
+   * Private IPv6 address
+   *
+   * @since 7.0.0
+   */
+  ipv6?: string;
+
+  /**
+   * Public IPv6 address
+   *
+   * @since 7.0.0
+   */
+  publicIpv6?: string;
+
+  /**
+   * Whether the device is connected through a VPN
+   *
+   * @since 7.0.0
+   */
+  isVpn: boolean;
+}
+
+/**
  * Result from getRssi()
  *
  * @since 7.0.0
@@ -394,11 +471,39 @@ export interface GetRssiResult {
  */
 export interface GetSsidResult {
   /**
-   * The SSID of the current network
+   * The SSID of the current network (null if not connected or unknown)
    *
    * @since 7.0.0
    */
-  ssid: string;
+  ssid: string | null;
+
+  /**
+   * Whether the device is connected through a VPN
+   *
+   * @since 7.0.0
+   */
+  isVpn: boolean;
+}
+
+/**
+ * Result from getBssid()
+ *
+ * @since 7.0.0
+ */
+export interface GetBssidResult {
+  /**
+   * The BSSID (MAC address) of the current access point (null if not connected)
+   *
+   * @since 7.0.0
+   */
+  bssid: string | null;
+
+  /**
+   * Whether the device is connected through a VPN
+   *
+   * @since 7.0.0
+   */
+  isVpn: boolean;
 }
 
 /**
